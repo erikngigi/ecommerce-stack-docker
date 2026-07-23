@@ -8,7 +8,7 @@ services:
         tty: true
         volumes:
           - ./src/magento/php:/home/magento/php:cached
-          - ./src/magento/magento2:/home/magento/project-community-edition:cached
+          - ./src/magento/magento2:/home/magento/magento2:cached
           - ./templates/php/php/info.php:/home/magento/php/info.php
           - ./templates/php/php/magento/php.ini-development:/usr/local/etc/php/php.ini:ro
           - ./templates/php/php-fpm.d/magento/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
