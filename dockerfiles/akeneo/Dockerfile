@@ -13,6 +13,18 @@ ARG GROUP_ID=1001
 # Install required system dependencies for PHP extensions
 RUN apt-get update && apt-get install -y --no-install-recommends \
     sudo \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    libxml2-dev \
+    libxslt-dev \
+    libonig-dev \
+    libgd-dev \
+    libssl-dev \
+    libicu-dev \
+    libmagickwand-dev \
+    libcurl4-openssl-dev \
     git \
     unzip \
     curl \
@@ -35,26 +47,26 @@ RUN node -v && npm -v && yarn -v
 RUN pecl install imagick apcu \
     && docker-php-ext-enable imagick apcu
 
-# Install all required PHP extensions automatically
-RUN install-php-extensions \
-    apcu \
-    bcmath \
-    calendar \
-    exif \
-    ftp \
-    gd \
-    gettext \
-    imagick \
-    intl \
-    mbstring \
-    mysqli \
-    opcache \
-    pcntl \
-    pdo_mysql \
-    soap \
-    sockets \
-    xsl \
-    zip
+# Configure and install PHP extensions
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        bcmath \
+        calendar \
+        curl \
+        exif \
+        gd \
+        gettext \
+        intl \
+        mbstring \
+        mysqli \
+        opcache \
+        pcntl \
+        pdo_mysql \
+        soap \
+        sockets \
+        xsl \
+        xml \
+        zip
 
 # Install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
