@@ -45,8 +45,8 @@ print_green "Updating Browserlist for Akeneo"
 akeneo_exec bash -c "cd $AKENEO_INST_DIR && yes | npx update-browserslist-db@latest"
 
 # Initialize Akeneo Database & Fixtures (This creates and activates 'en_US')
-print_blue "Initializing Akeneo Database & Locales..."
-akeneo_exec bash -c "cd $AKENEO_INST_DIR && bin/console pim:installer:db --env=dev -n"
+# print_blue "Initializing Akeneo Database & Locales..."
+# akeneo_exec bash -c "cd $AKENEO_INST_DIR && bin/console pim:installer:db --env=dev -n"
 
 # Install akeneo
 print_blue "Installing Akeneo"
