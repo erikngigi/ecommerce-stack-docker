@@ -4,7 +4,7 @@ on:
         branches:
           - development
         paths:
-          - 'dockerfiles/magento/**'
+          - 'magento/dockerfiles/**'
           - '.github/workflows/magento-build.yml'
     workflow_dispatch:
         inputs:
@@ -30,8 +30,8 @@ jobs:
           - name: Build and push
             uses: docker/build-push-action@v7
             with:
-                context: ./dockerfiles/magento
-                file: ./dockerfiles/magento/Dockerfile
+                context: ./magento/dockerfiles
+                file: ./magento/dockerfiles/Dockerfile
                 push: true
                 tags: ghcr.io/${{ github.repository_owner }}/${{ vars.MAGENTO_IMAGE_NAME }}:latest
           - name: Image build complete

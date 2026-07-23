@@ -9,14 +9,14 @@ services:
         volumes:
           - ./src/magento/php:/home/magento/php:cached
           - ./src/magento/magento2:/home/magento/magento2:cached
-          - ./templates/php/php/info.php:/home/magento/php/info.php
-          - ./templates/php/php/magento/php.ini-development:/usr/local/etc/php/php.ini:ro
-          - ./templates/php/php-fpm.d/magento/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-          - ./templates/php/php-fpm.d/magento/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
+          - ./magento/templates/php/info.php:/home/magento/php/info.php:ro
+          - ./magento/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
+          - ./magento/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+          - ./magento/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
         ports:
           - "9000:9000"
         networks:
-          - akeneo-magento-app-network
+          - ecommerce-network
     # Akeneo
     akeneo:
         image: ghcr.io/erikngigi/akeneo:latest
@@ -27,14 +27,14 @@ services:
         volumes:
           - ./src/akeneo/php:/home/akeneo/php:cached
           - ./src/akeneo/akeneo7:/home/akeneo/akeneo7:cached
-          - ./templates/php/php/info.php:/home/akeneo/php/info.php
-          - ./templates/php/php/akeneo/php.ini-development:/usr/local/etc/php/php.ini:ro
-          - ./templates/php/php-fpm.d/akeneo/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-          - ./templates/php/php-fpm.d/akeneo/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
+          - ./akeneo/templates/php/info.php:/home/akeneo/php/info.php:ro
+          - ./akeneo/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
+          - ./akeneo/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+          - ./akeneo/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
         ports:
           - "9050:9050"
         networks:
-          - akeneo-magento-app-network
+          - ecommerce-network
         depends_on:
           - "mysql-db"
     # MySQL
@@ -49,11 +49,11 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         networks:
-          - akeneo-magento-app-network
+          - ecommerce-network
         volumes:
           - db-data:/var/lib/mysql/
-          - ./templates/mysql:/docker-entrypoint-initdb.d
-          - ./templates/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+          - ./mysql/settings:/docker-entrypoint-initdb.d
+          - ./mysql/settings/my.cnf:/etc/mysql/conf.d/my.cnf:ro
     # Elastisearch
     elasticsearch:
         image: elasticsearch:8.19.19
@@ -62,17 +62,17 @@ services:
         ports:
           - "9100:9200"
         networks:
-          - akeneo-magento-app-network
+          - ecommerce-network
         volumes:
-          - ./templates/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-          - ./templates/elasticsearch/jvm.options:/usr/share/elasticsearch/config/jvm.options.d/jvm.options
+          - ./elasticsearch/settings/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+          - ./elasticsearch/settings/jvm.options:/usr/share/elasticsearch/config/jvm.options.d/jvm.options
           - es-data:/usr/share/elasticsearch/data
         depends_on:
           - akeneo
           - magento
 networks:
-    akeneo-magento-app-network:
-        name: akeneo-magento-app-network
+    ecommerce-network:
+        name: ecommerce-network
         driver: bridge
 volumes:
     es-data:

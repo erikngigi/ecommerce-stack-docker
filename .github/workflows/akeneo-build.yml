@@ -4,7 +4,7 @@ on:
         branches:
           - 'development'
         paths:
-          - 'dockerfiles/akeneo/**'
+          - 'akeneo/dockerfiles/**'
           - '.github/workflows/akeneo-build.yml'
     workflow_dispatch:
         inputs:
@@ -30,8 +30,8 @@ jobs:
           - name: Build and push
             uses: docker/build-push-action@v7
             with:
-                context: ./dockerfiles/akeneo
-                file: ./dockerfiles/akeneo/Dockerfile
+                context: ./akeneo/dockerfiles
+                file: ./akeneo/dockerfiles/Dockerfile
                 push: true
                 tags: ghcr.io/${{ github.repository_owner }}/${{ vars.AKENEO_IMAGE_NAME }}:latest
           - name: Image build complete
