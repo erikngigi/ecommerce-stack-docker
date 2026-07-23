@@ -11,7 +11,7 @@ services:
       - ./src/magento:/home/magento/php:cached
 
       # Health/Info Diagnostic Tools
-      - ./magento/templates/diagnostics/info.php:/home/magento/php/info.php:ro
+      - ./magento/templates/diagnostics/info.php:/home/magento/tools/info.php:ro
 
       # Configuration Files
       - ./magento/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
