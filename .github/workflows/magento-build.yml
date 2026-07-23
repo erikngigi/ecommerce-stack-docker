@@ -1,38 +1,38 @@
 name: Build and push PHP-FPM Docker image for Magento 2.4.7 to GHCR.
 on:
-    push:
-        branches:
-          - development
-        paths:
-          - 'magento/dockerfiles/**'
-          - '.github/workflows/magento-build.yml'
-    workflow_dispatch:
-        inputs:
-            tags:
-                description: 'Custom tag for the image (optional)'
-                required: false
-                default: 'latest'
+  push:
+    branches:
+      - development
+    paths:
+      - 'magento/dockerfiles/**'
+      - '.github/workflows/magento-build.yml'
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Custom tag for the image (optional)'
+        required: false
+        default: 'latest'
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            packages: write
-        steps:
-          - name: Check out repository
-            uses: actions/checkout@v7
-          - name: Login to Github Container Registry
-            uses: docker/login-action@v4
-            with:
-                registry: ghcr.io
-                username: ${{ github.actor }}
-                password: ${{ secrets.GITHUB_TOKEN }}
-          - name: Build and push
-            uses: docker/build-push-action@v7
-            with:
-                context: ./magento/dockerfiles
-                file: ./magento/dockerfiles/Dockerfile
-                push: true
-                tags: ghcr.io/${{ github.repository_owner }}/${{ vars.MAGENTO_IMAGE_NAME }}:latest
-          - name: Image build complete
-            run: echo "✅ PHP-FPM Magento Docker image built and pushed successfully."
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Login to Github Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: ./magento/dockerfiles
+          file: ./magento/dockerfiles/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/${{ vars.MAGENTO_IMAGE_NAME }}:latest
+      - name: Image build complete
+        run: echo "✅ PHP-FPM Magento Docker image built and pushed successfully."

@@ -1,83 +1,83 @@
 services:
-    # Magento
-    magento:
-        image: ghcr.io/erikngigi/magento:latest
-        hostname: magento
-        container_name: magento
-        restart: unless-stopped
-        tty: true
-        volumes:
-          - ./src/magento/php:/home/magento/php:cached
-          - ./src/magento/magento2:/home/magento/magento2:cached
-          - ./magento/templates/php/info.php:/home/magento/php/info.php:ro
-          - ./magento/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
-          - ./magento/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-          - ./magento/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
-        ports:
-          - "9000:9000"
-        networks:
-          - ecommerce-network
-    # Akeneo
-    akeneo:
-        image: ghcr.io/erikngigi/akeneo:latest
-        hostname: akeneo
-        container_name: akeneo
-        restart: unless-stopped
-        tty: true
-        volumes:
-          - ./src/akeneo/php:/home/akeneo/php:cached
-          - ./src/akeneo/akeneo7:/home/akeneo/akeneo7:cached
-          - ./akeneo/templates/php/info.php:/home/akeneo/php/info.php:ro
-          - ./akeneo/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
-          - ./akeneo/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
-          - ./akeneo/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
-        ports:
-          - "9050:9050"
-        networks:
-          - ecommerce-network
-        depends_on:
-          - "mysql-db"
-    # MySQL
-    mysql-db:
-        image: mysql:8.4
-        hostname: mysql-db
-        container_name: mysql-db
-        restart: unless-stopped
-        tty: true
-        ports:
-          - "3307:3306"
-        environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-        networks:
-          - ecommerce-network
-        volumes:
-          - db-data:/var/lib/mysql/
-          - ./mysql/settings:/docker-entrypoint-initdb.d
-          - ./mysql/settings/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-    # Elastisearch
-    elasticsearch:
-        image: elasticsearch:8.19.19
-        hostname: elasticsearch
-        container_name: elasticsearch
-        ports:
-          - "9100:9200"
-        networks:
-          - ecommerce-network
-        volumes:
-          - ./elasticsearch/settings/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-          - ./elasticsearch/settings/jvm.options:/usr/share/elasticsearch/config/jvm.options.d/jvm.options
-          - es-data:/usr/share/elasticsearch/data
-        depends_on:
-          - akeneo
-          - magento
+  # Magento
+  magento:
+    image: ghcr.io/erikngigi/magento:latest
+    hostname: magento
+    container_name: magento
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./src/magento/php:/home/magento/php:cached
+      - ./src/magento/magento2:/home/magento/magento2:cached
+      - ./magento/templates/php/info.php:/home/magento/php/info.php:ro
+      - ./magento/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
+      - ./magento/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ./magento/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
+    ports:
+      - "9000:9000"
+    networks:
+      - ecommerce-network
+  # Akeneo
+  akeneo:
+    image: ghcr.io/erikngigi/akeneo:latest
+    hostname: akeneo
+    container_name: akeneo
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./src/akeneo/php:/home/akeneo/php:cached
+      - ./src/akeneo/akeneo7:/home/akeneo/akeneo7:cached
+      - ./akeneo/templates/php/info.php:/home/akeneo/php/info.php:ro
+      - ./akeneo/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
+      - ./akeneo/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+      - ./akeneo/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
+    ports:
+      - "9050:9050"
+    networks:
+      - ecommerce-network
+    depends_on:
+      - "mysql-db"
+  # MySQL
+  mysql-db:
+    image: mysql:8.4
+    hostname: mysql-db
+    container_name: mysql-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - ecommerce-network
+    volumes:
+      - db-data:/var/lib/mysql/
+      - ./mysql/settings:/docker-entrypoint-initdb.d
+      - ./mysql/settings/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+  # Elastisearch
+  elasticsearch:
+    image: elasticsearch:8.19.19
+    hostname: elasticsearch
+    container_name: elasticsearch
+    ports:
+      - "9100:9200"
+    networks:
+      - ecommerce-network
+    volumes:
+      - ./elasticsearch/settings/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch/settings/jvm.options:/usr/share/elasticsearch/config/jvm.options.d/jvm.options
+      - es-data:/usr/share/elasticsearch/data
+    depends_on:
+      - akeneo
+      - magento
 networks:
-    ecommerce-network:
-        name: ecommerce-network
-        driver: bridge
+  ecommerce-network:
+    name: ecommerce-network
+    driver: bridge
 volumes:
-    es-data:
-        name: elasticsearch-data-volume
-        driver: local
-    db-data:
-        name: mysql-database-volume
-        driver: local
+  es-data:
+    name: elasticsearch-data-volume
+    driver: local
+  db-data:
+    name: mysql-database-volume
+    driver: local

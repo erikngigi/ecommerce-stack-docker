@@ -3,6 +3,3 @@
 
 # Ignore Akeneo and Magento files
 src/*
-
-# Ignore Akeneo and Magento self-signed certificates
-templates/nginx/certs/*

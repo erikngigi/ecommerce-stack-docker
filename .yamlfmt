@@ -1,0 +1,24 @@
+# Global settings
+line_ending: lf
+match_type: doublestar
+gitignore_excludes: true
+
+# Included & excluded paths
+include:
+  - "**/*.yaml"
+  - "**/*.yml"
+exclude:
+  - "vendor/**"
+  - "node_modules/**"
+  - "dist/**"
+
+# Specific formatter configuration
+formatter:
+  type: basic
+  indent: 2
+  max_line_length: 100
+  retain_line_breaks: true
+  trim_trailing_whitespace: true
+  include_document_start: false
+  indentless_arrays: false
+  pad_line_comments: 1
