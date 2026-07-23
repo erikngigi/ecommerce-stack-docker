@@ -54,20 +54,9 @@ bin/magento setup:install \
 --currency=$CURRENCY \
 --timezone=$TIMEZONE \
 --use-rewrites=1 \
+--search-engine=$SEARCH_ENGINE
 --elasticsearch-host=$ELASTICSEARCH_HOST \
 --elasticsearch-port=$ELASTICSEARCH_PORT \
---session-save=redis \
---session-save-redis-host=redis \
---session-save-redis-db=0 \
---session-save-redis-password=${REDIS_PASSWORD} \
---cache-backend=redis \
---cache-backend-redis-server=redis \
---cache-backend-redis-db=2 \
---cache-backend-redis-password=${REDIS_PASSWORD} \
---page-cache=redis \
---page-cache-redis-server=redis \
---page-cache-redis-db=4 \
---page-cache-redis-password=${REDIS_PASSWORD}
 "
 
 # Reindex files
