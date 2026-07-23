@@ -53,9 +53,9 @@ bin/magento setup:install \
 --currency=$CURRENCY \
 --timezone=$TIMEZONE \
 --use-rewrites=1 \
---search-engine=$SEARCH_ENGINE
+--search-engine=$SEARCH_ENGINE \
 --elasticsearch-host=$ELASTICSEARCH_HOST \
---elasticsearch-port=$ELASTICSEARCH_PORT \
+--elasticsearch-port=$ELASTICSEARCH_PORT
 "
 
 # Reindex files
