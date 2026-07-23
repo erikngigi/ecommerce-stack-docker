@@ -7,9 +7,13 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ./src/magento/php:/home/magento/php:cached
-      - ./src/magento/magento2:/home/magento/magento2:cached
-      - ./magento/templates/php/info.php:/home/magento/php/info.php:ro
+      # Application Source Code Bind Mount
+      - ./src/magento:/home/magento/php:cached
+
+      # Health/Info Diagnostic Tools
+      - ./magento/templates/diagnostics/info.php:/home/magento/php/info.php:ro
+
+      # Configuration Files
       - ./magento/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
       - ./magento/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ./magento/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
@@ -25,9 +29,13 @@ services:
     restart: unless-stopped
     tty: true
     volumes:
-      - ./src/akeneo/php:/home/akeneo/php:cached
-      - ./src/akeneo/akeneo7:/home/akeneo/akeneo7:cached
-      - ./akeneo/templates/php/info.php:/home/akeneo/php/info.php:ro
+      # Application Source Code Bind Mount
+      - ./src/akeneo:/home/akeneo/akeneo:cached
+
+      # Health/Info Diagnostic Tools
+      - ./akeneo/templates/diagnostics/info.php:/home/akeneo/tools/info.php:ro
+
+      # Configuration Files
       - ./akeneo/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
       - ./akeneo/settings/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
       - ./akeneo/settings/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf:ro
