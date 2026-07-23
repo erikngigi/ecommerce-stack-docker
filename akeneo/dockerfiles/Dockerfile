@@ -4,9 +4,10 @@ FROM php:8.1-fpm
 # Maintainer details
 LABEL Maintainer="Eric Ngigi <cloud@ericngigi.com>"
 LABEL Description="PHP-FPM using version 8.1 for Akeneo 7"
-LABEL Version="1.2"
+LABEL Version="1.4"
 
 # Define build arguments with fallbacks
+ARG USER_NAME=appuser
 ARG USER_ID=1001
 ARG GROUP_ID=1001
 
@@ -30,7 +31,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gnupg2 \
     bash \
-    mycli \
     vim \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -75,23 +75,24 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 ENV PATH="/usr/local/bin:$PATH"
 
 # Create application user and give sudo access
-RUN groupadd -g ${GROUP_ID} akeneo \
-    && useradd -u ${USER_ID} -ms /bin/bash -g akeneo akeneo \
-    && echo "akeneo ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/akeneo \
-    && chmod 0440 /etc/sudoers.d/akeneo \
-    && mkdir -p /home/akeneo/.config \
-    && mkdir -p /home/akeneo/akeneo7 \
-    && chown -R akeneo:akeneo /home/akeneo
+RUN groupadd -g ${GROUP_ID} ${USER_NAME} \
+    && useradd -u ${USER_ID} -ms /bin/bash -g ${USER_NAME} ${USER_NAME} \
+    && echo "${USER_NAME} ALL=(ALL) NOPASSWD:ALL" >/etc/sudoers.d/${USER_NAME} \
+    && chmod 0440 /etc/sudoers.d/${USER_NAME} \
+    && mkdir -p /home/${USER_NAME}/.config \
+    && mkdir -p /home/${USER_NAME}/akeneo7 \
+    && mkdir -p /home/${USER_NAME}/tools \
+    && chown -R ${USER_NAME}:${USER_NAME} /home/${USER_NAME}
 
 # Set Composer home for Akeneo user
-ENV COMPOSER_HOME=/home/akeneo/.composer
-RUN mkdir -p $COMPOSER_HOME && chown -R akeneo:akeneo $COMPOSER_HOME
+ENV COMPOSER_HOME=/home/${USER_NAME}/.composer
+RUN mkdir -p $COMPOSER_HOME && chown -R ${USER_NAME}:${USER_NAME} $COMPOSER_HOME
 
 # Switch to non-root user
-USER akeneo
+USER ${USER_NAME}
 
 # Set working directory
-WORKDIR /home/akeneo
+WORKDIR /home/${USER_NAME}
 
 # Start php-fpm
 CMD ["php-fpm"]

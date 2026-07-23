@@ -8,10 +8,10 @@ services:
     tty: true
     volumes:
       # Application Source Code Bind Mount
-      - ./src/magento:/home/magento/php:cached
+      - ./src/magento:/home/appuser/magento2:cached
 
       # Health/Info Diagnostic Tools
-      - ./magento/templates/diagnostics/info.php:/home/magento/tools/info.php:ro
+      - ./magento/templates/diagnostics/info.php:/home/appuser/tools/info.php:ro
 
       # Configuration Files
       - ./magento/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
@@ -30,10 +30,10 @@ services:
     tty: true
     volumes:
       # Application Source Code Bind Mount
-      - ./src/akeneo:/home/akeneo/akeneo:cached
+      - ./src/akeneo:/home/appuser/akeneo7:cached
 
       # Health/Info Diagnostic Tools
-      - ./akeneo/templates/diagnostics/info.php:/home/akeneo/tools/info.php:ro
+      - ./akeneo/templates/diagnostics/info.php:/home/appuser/tools/info.php:ro
 
       # Configuration Files
       - ./akeneo/settings/php/php.ini-development:/usr/local/etc/php/php.ini:ro
