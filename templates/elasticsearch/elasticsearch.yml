@@ -9,7 +9,7 @@ http.port: 9200
 discovery.type: single-node
 # ------------------------------------ Security (X-Pack) ---------------------------------
 # 1. Enable Basic Password Authentication
-xpack.security.enabled: true
+xpack.security.enabled: false
 # 2. Disable HTTP TLS for easier local testing (e.g. use http:// instead of https://)
 xpack.security.http.ssl.enabled: false
 # 3. Disable internal Transport TLS (not strictly needed for single-node dev)
