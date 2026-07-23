@@ -55,7 +55,10 @@ bin/magento setup:install \
 --use-rewrites=1 \
 --search-engine=$SEARCH_ENGINE \
 --elasticsearch-host=$ELASTICSEARCH_HOST \
---elasticsearch-port=$ELASTICSEARCH_PORT
+--elasticsearch-port=$ELASTICSEARCH_PORT \
+--elasticsearch-enable-auth=1 \
+--elasticsearch-username=$ELASTICSEARCH_USERNAME \
+--elasticsearch-password=$ELASTICSEARCH_PASSWORD
 "
 
 # Reindex files
