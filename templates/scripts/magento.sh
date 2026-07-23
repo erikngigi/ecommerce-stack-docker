@@ -19,6 +19,7 @@ magento_exec bash -c "composer config --global http-basic.repo.magento.com $ADOB
 print_green "Magento composer details added successfully."
 
 # Download the Magento community edition files directly into $MAGENTO_INST_DIR
+magento_exec bash -c "composer config --global audit.block false"
 magento_exec bash -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition=$MAGENTO_VERSION $MAGENTO_INST_DIR"
 print_green "Magento version $MAGENTO_VERSION downloaded successfully."
 
