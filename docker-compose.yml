@@ -39,9 +39,9 @@ services:
           - "mysql-db"
     # MySQL
     mysql-db:
-        image: mysql:lts
-        hostname: mysql-lts
-        container_name: mysql-lts
+        image: mysql:8.4
+        hostname: mysql-db
+        container_name: mysql-db
         restart: unless-stopped
         tty: true
         ports:
