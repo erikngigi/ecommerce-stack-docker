@@ -26,7 +26,7 @@ services:
         tty: true
         volumes:
           - ./src/akeneo/php:/home/akeneo/php:cached
-          - ./src/akeneo/akeneo7:/home/akeneo/akeneo7:cached
+          - ./src/akeneo/akeneo7:/home/eric/ecommerce-stack-docker/src/akeneo/akeneo7:cached
           - ./templates/php/php/info.php:/home/akeneo/php/info.php
           - ./templates/php/php/akeneo/php.ini-development:/usr/local/etc/php/php.ini:ro
           - ./templates/php/php-fpm.d/akeneo/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
