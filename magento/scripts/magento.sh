@@ -3,11 +3,21 @@
 # Resolve the real path of this script (handles symlinks)
 MAGENTO_SCRIPT_DIR="$(cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")" && pwd)"
 
-# source the file with the magento details
-source "$MAGENTO_SCRIPT_DIR/magento.env"
+# Break program is error is encountered
+set -eo pipefail
 
 # Helper shell script for printing
 source "$MAGENTO_SCRIPT_DIR/colors.sh"
+
+# Environmental file containing Magento details
+ENV_FILE="$MAGENTO_SCRIPT_DIR/.env"
+
+if [ -f "$ENV_FILE" ]; then
+  source "$ENV_FILE"
+else
+  print_red "Warning: Magento environment file not found at $ENV_FILE"
+  exit 1
+fi
 
 # Define a reusable function for the Docker container magento
 magento_exec() {

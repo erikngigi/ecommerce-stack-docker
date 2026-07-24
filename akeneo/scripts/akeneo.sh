@@ -3,11 +3,21 @@
 # Resolve the real path of this script (handles symlinks)
 AKENEO_SCRIPT_DIR="$(cd "$(dirname "$(realpath "${BASH_SOURCE[0]}")")" && pwd)"
 
-# Environmental file containing Akeneo details
-source "$AKENEO_SCRIPT_DIR/akeneo.env"
+# Break program is error is encountered
+set -eo pipefail
 
 # Helper shell script for printing
 source "$AKENEO_SCRIPT_DIR/colors.sh"
+
+# Source the file only if it exist and is a regular file
+ENV_FILE="$AKENEO_SCRIPT_DIR/.env"
+
+if [ -f "$ENV_FILE" ]; then
+  source "$ENV_FILE"
+else
+  print_red "Warning: Akeneo environment file not found at $ENV_FILE"
+  exit 1
+fi
 
 # Define a reusable function for the Docker container
 akeneo_exec() {
