@@ -4,7 +4,7 @@ FROM php:8.1-fpm
 # Maintainer details
 LABEL Maintainer="Eric Ngigi <cloud@ericngigi.com>"
 LABEL Description="PHP-FPM using version 8.1 for Akeneo 7"
-LABEL Version="1.4"
+LABEL Version="1.5"
 
 # Define build arguments with fallbacks
 ARG USER_NAME=appuser
@@ -35,9 +35,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Node.js (LTS) and Yarn
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get update && apt-get install -y nodejs \
-    && npm install -g yarn \
+    && npm install -g yarn@1.22.19 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Verify installations
@@ -69,7 +69,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
         zip
 
 # Install Composer globally
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --2 --install-dir=/usr/local/bin --filename=composer
 
 # Add Composer to the PATH
 ENV PATH="/usr/local/bin:$PATH"
@@ -92,7 +92,7 @@ RUN mkdir -p $COMPOSER_HOME && chown -R ${USER_NAME}:${USER_NAME} $COMPOSER_HOME
 USER ${USER_NAME}
 
 # Set working directory
-WORKDIR /home/${USER_NAME}
+WORKDIR /home/${USER_NAME}/akeneo7
 
 # Start php-fpm
 CMD ["php-fpm"]
