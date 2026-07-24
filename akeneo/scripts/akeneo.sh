@@ -33,15 +33,14 @@ akeneo_exec bash -c "tar -xzf /tmp/akeneo.tar.gz -C $AKENEO_INST_DIR --strip-com
 
 # copy .env to .env.local
 print_green "Creating Akeneo .env.local file..."
-akeneo_exec bash -c "cd $AKENEO_INST_DIR && cp .env .env.local"
+akeneo_exec bash -c "cp .env .env.local"
 
 # create an executable akeneo console application
-akeneo_exec bash -c "cd $AKENEO_INST_DIR && chmod u+x bin/console"
+akeneo_exec bash -c "chmod u+x bin/console"
 
 # append details to .env.local file
 print_green "Appending details to the Akeneo .env.local file"
 akeneo_exec bash -c "
-    cd $AKENEO_INST_DIR &&
     sed -i 's|^APP_DATABASE_HOST=.*|APP_DATABASE_HOST=$MYSQL_AKENEO_DATABASE_HOST|' .env.local;
     sed -i 's|^APP_DATABASE_NAME=.*|APP_DATABASE_NAME=$MYSQL_AKENEO_DATABASE|' .env.local;
     sed -i 's|^APP_DATABASE_USER=.*|APP_DATABASE_USER=$MYSQL_AKENEO_USER|' .env.local;
@@ -52,14 +51,14 @@ akeneo_exec bash -c "
 
 # Update browserlist
 print_green "Updating Browserlist for Akeneo"
-akeneo_exec bash -c "cd $AKENEO_INST_DIR && yes | npx update-browserslist-db@latest"
+akeneo_exec bash -c "yes | npx update-browserslist-db@latest"
 
 # Install akeneo
 print_blue "Installing Akeneo"
-akeneo_exec bash -c "cd $AKENEO_INST_DIR && NO_DOCKER=true make dev"
+akeneo_exec bash -c "NO_DOCKER=true make dev"
 
 print_green "Creating User $AKENEO_USERNAME"
-akeneo_exec bash -c "cd $AKENEO_INST_DIR && bin/console pim:user:create \
+akeneo_exec bash -c "bin/console pim:user:create \
   $AKENEO_USERNAME \
   $AKENEO_PASSWORD \
   $AKENEO_USER_EMAIL \
