@@ -44,29 +44,31 @@ services:
     networks:
       - ecommerce-network
     depends_on:
-      - "mysql-db"
-  # MySQL
-  mysql-db:
-    image: mysql:8.4
-    hostname: mysql-db
-    container_name: mysql-db
+      - akeneo-db
+  # Akeneo Database
+  akeneo-db:
+    image: mysql:8.0.30
+    hostname: akeneo-db
+    container_name: akeneo-db
     restart: unless-stopped
     tty: true
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${AKENEO_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${AKENEO_DATABASE}
+      MYSQL_USER: ${AKENEO_USER}
+      MYSQL_PASSWORD: ${AKENEO_DB_USER_PASSWORD}
     networks:
       - ecommerce-network
     volumes:
-      - db-data:/var/lib/mysql/
-      - ./mysql/settings:/docker-entrypoint-initdb.d
+      - akeneo-db-data:/var/lib/mysql/
       - ./mysql/settings/my.cnf:/etc/mysql/conf.d/my.cnf:ro
   # Elastisearch
   elasticsearch:
-    image: elasticsearch:8.19.19
-    hostname: elasticsearch
-    container_name: elasticsearch
+    image: elasticsearch:8.4.2
+    hostname: akeneo-es
+    container_name: akeneo-es
     ports:
       - "9100:9200"
     networks:
@@ -74,18 +76,17 @@ services:
     volumes:
       - ./elasticsearch/settings/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
       - ./elasticsearch/settings/jvm.options:/usr/share/elasticsearch/config/jvm.options.d/jvm.options
-      - es-data:/usr/share/elasticsearch/data
+      - akeneo-es-data:/usr/share/elasticsearch/data
     depends_on:
-      - akeneo
-      - magento
+      - akeneo-db
 networks:
   ecommerce-network:
     name: ecommerce-network
     driver: bridge
 volumes:
-  es-data:
-    name: elasticsearch-data-volume
+  akeneo-db-data:
+    name: akeneo-mysql-db
     driver: local
-  db-data:
-    name: mysql-database-volume
+  akeneo-es-data:
+    name: akeneo-elasticsearch-volume
     driver: local
