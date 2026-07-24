@@ -81,4 +81,14 @@ php bin/magento module:disable Magento_TwoFactorAuth;
 # Recompile files
 print_green "Recompile Magento files"
 magento_exec bash -c "php bin/magento setup:di:compile"
-magento_exec bash -c "php bin/magento cache:clean"
+
+# Deploy Static Content (LAST before indexing/cache)
+print_green "Deploying Static Content"
+magento_exec bash -c "php bin/magento setup:static-content:deploy -f"
+
+print_green "Reindexing and flushing cache"
+magento_exec bash -c "
+php bin/magento indexer:reindex;
+php bin/magento cache:flush;
+chmod -R 777 pub/static var generated;
+"
