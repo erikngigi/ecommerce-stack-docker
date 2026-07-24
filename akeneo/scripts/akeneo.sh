@@ -54,13 +54,8 @@ akeneo_exec bash -c "
 print_green "Updating Browserlist for Akeneo"
 akeneo_exec bash -c "cd $AKENEO_INST_DIR && yes | npx update-browserslist-db@latest"
 
-# Initialize Akeneo Database & Fixtures (This creates and activates 'en_US')
-# print_blue "Initializing Akeneo Database & Locales..."
-# akeneo_exec bash -c "cd $AKENEO_INST_DIR && bin/console pim:installer:db --env=dev -n"
-
 # Install akeneo
 print_blue "Installing Akeneo"
-akeneo_exec bash -c "cd $AKENEO_INST_DIR && chmod -R 777 /var/cache var/logs public/media"
 akeneo_exec bash -c "cd $AKENEO_INST_DIR && NO_DOCKER=true make dev"
 
 print_green "Creating User $AKENEO_USERNAME"
