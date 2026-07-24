@@ -4,7 +4,7 @@ FROM php:8.4-fpm
 # Maintainer details
 LABEL Maintainer="Eric Ngigi <cloud@ericngigi.com>"
 LABEL Description="PHP-FPM using version 8.4 for Magento 2.4.8-p4"
-LABEL Version="1.4"
+LABEL Version="1.5"
 
 # Define build arguments with fallbacks
 ARG USER_NAME=appuser
@@ -70,7 +70,7 @@ RUN mkdir -p $COMPOSER_HOME && chown -R ${USER_NAME}:${USER_NAME} $COMPOSER_HOME
 USER ${USER_NAME}
 
 # Set working directory
-WORKDIR /home/${USER_NAME}
+WORKDIR /home/${USER_NAME}/magento2
 
 # Start php-fpm
 CMD ["php-fpm"]
