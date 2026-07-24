@@ -21,6 +21,44 @@ services:
       - "9000:9000"
     networks:
       - ecommerce-network
+
+  # Magento MariaDB Database
+  magento-db:
+    image: mariadb:11.4
+    hostname: magento-db
+    container_name: magento-db
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MAGENTO_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MAGENTO_DATABASE}
+      MYSQL_USER: ${MAGENTO_USER}
+      MYSQL_PASSWORD: ${MAGENTO_DB_USER_PASSWORD}
+    networks:
+      - ecommerce-network
+    volumes:
+      - magento-db-data:/var/lib/mysql
+
+  # Magento OpenSearch Engine
+  magento-opensearch:
+    image: opensearchproject/opensearch:2.11.0
+    hostname: magento-opensearch
+    container_name: magento-opensearch
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - DISABLE_SECURITY_PLUGIN=true
+    ports:
+      - "9400:9200"
+    networks:
+      - ecommerce-network
+    volumes:
+      - magento-opensearch-data:/usr/share/opensearch/data
+
+
   # Akeneo
   akeneo:
     image: ghcr.io/erikngigi/akeneo:latest
@@ -45,7 +83,8 @@ services:
       - ecommerce-network
     depends_on:
       - akeneo-db
-  # Akeneo Database
+
+  # Akeneo MySQL Database
   akeneo-db:
     image: mysql:8.0.30
     hostname: akeneo-db
@@ -64,7 +103,8 @@ services:
     volumes:
       - akeneo-db-data:/var/lib/mysql/
       - ./mysql/settings/my.cnf:/etc/mysql/conf.d/my.cnf:ro
-  # Elastisearch
+
+  # Akeneo Elastisearch Engine
   elasticsearch:
     image: elasticsearch:8.4.2
     hostname: akeneo-es
@@ -79,6 +119,8 @@ services:
       - akeneo-es-data:/usr/share/elasticsearch/data
     depends_on:
       - akeneo-db
+
+
 networks:
   ecommerce-network:
     name: ecommerce-network
@@ -89,4 +131,10 @@ volumes:
     driver: local
   akeneo-es-data:
     name: akeneo-elasticsearch-volume
+    driver: local
+  magento-db-data:
+    name: magento-mariadb-volume
+    driver: local
+  magento-opensearch-data:
+    name: magento-opensearch-volume
     driver: local

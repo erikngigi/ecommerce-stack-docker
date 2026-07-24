@@ -34,7 +34,6 @@ print_green "Magento version $MAGENTO_VERSION downloaded successfully."
 
 # Set the file permissions and make Magento binary executable
 magento_exec bash -c "
-    cd $MAGENTO_INST_DIR &&
     find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+w {} +;
     find var generated vendor pub/static pub/media app/etc -type f -exec chmod g+ws {} +;
     chmod +x bin/magento;
@@ -44,7 +43,6 @@ print_green "Update permissions of Magento directory"
 # Setup magento
 print_blue "Installing Magento version $MAGENTO_VERSION"
 magento_exec bash -c "
-cd $MAGENTO_INST_DIR &&
 bin/magento setup:install \
 --base-url=$BASE_URL \
 --use-secure=1 \
@@ -64,24 +62,23 @@ bin/magento setup:install \
 --timezone=$TIMEZONE \
 --use-rewrites=1 \
 --search-engine=$SEARCH_ENGINE \
---elasticsearch-host=$ELASTICSEARCH_HOST \
---elasticsearch-port=$ELASTICSEARCH_PORT \
+--opensearch-host=$ELASTICSEARCH_HOST \
+--opensearch-port=$ELASTICSEARCH_PORT \
 "
 
 # Reindex files
 print_green "Reindexing Magento files"
-magento_exec bash -c "cd $MAGENTO_INST_DIR && php bin/magento setup:static-content:deploy -f"
-magento_exec bash -c "cd $MAGENTO_INST_DIR && php bin/magento indexer:reindex"
+magento_exec bash -c "php bin/magento setup:static-content:deploy -f"
+magento_exec bash -c "php bin/magento indexer:reindex"
 
 # Disable Two factor authentication
 print_green "Disabling Two factor authentication"
 magento_exec bash -c "
-cd $MAGENTO_INST_DIR &&
 php bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth;
 php bin/magento module:disable Magento_TwoFactorAuth;
 "
 
 # Recompile files
 print_green "Recompile Magento files"
-magento_exec bash -c "cd $MAGENTO_INST_DIR && php bin/magento setup:di:compile"
-magento_exec bash -c "cd $MAGENTO_INST_DIR && php bin/magento cache:clean"
+magento_exec bash -c "php bin/magento setup:di:compile"
+magento_exec bash -c "php bin/magento cache:clean"
