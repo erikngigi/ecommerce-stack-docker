@@ -52,7 +52,7 @@ services:
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
       - DISABLE_SECURITY_PLUGIN=true
     ports:
-      - "9400:9200"
+      - "9250:9200"
     networks:
       - ecommerce-network
     volumes:
