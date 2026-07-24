@@ -3,3 +3,6 @@
 
 # Ignore Akeneo and Magento files
 src/*
+
+# Ignore themed sirectory
+themes/
