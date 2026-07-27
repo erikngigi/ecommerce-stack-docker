@@ -1,10 +1,10 @@
 # Base image
-FROM php:8.4-fpm
+FROM php:8.2-fpm
 
 # Maintainer details
 LABEL Maintainer="Eric Ngigi <cloud@ericngigi.com>"
-LABEL Description="PHP-FPM using version 8.4 for Magento 2.4.8-p4"
-LABEL Version="1.5"
+LABEL Description="PHP-FPM using version 8.2 for Magento 2.4.6"
+LABEL Version="1.6"
 
 # Define build arguments with fallbacks
 ARG USER_NAME=appuser
