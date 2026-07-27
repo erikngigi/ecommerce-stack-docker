@@ -21,6 +21,9 @@ services:
       - "9000:9000"
     networks:
       - ecommerce-network
+    depends_on:
+      - magento-db
+      - magento-opensearch
 
   # Magento MariaDB Database
   magento-db:

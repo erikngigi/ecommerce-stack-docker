@@ -63,9 +63,9 @@ bin/magento setup:install \
 --timezone=$TIMEZONE \
 --use-rewrites=1 \
 --search-engine=$SEARCH_ENGINE \
---opensearch-host=$ELASTICSEARCH_HOST \
---opensearch-port=$ELASTICSEARCH_PORT \
---opensearch-timeout=15
+--opensearch-host=$OPENSEARCH_HOST \
+--opensearch-port=$OPENSEARCH_PORT \
+--opensearch-timeout=$OPENSEARCH_TIMEOUT
 "
 
 # Reindex files
