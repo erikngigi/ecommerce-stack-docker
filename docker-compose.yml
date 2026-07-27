@@ -24,7 +24,7 @@ services:
 
   # Magento MariaDB Database
   magento-db:
-    image: mariadb:10.11
+    image: mariadb:10.2
     hostname: magento-db
     container_name: magento-db
     restart: unless-stopped
