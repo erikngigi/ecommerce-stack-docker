@@ -1,5 +1,7 @@
 services:
-  # Magento
+  # ----------- #
+  # MAGENTO
+  # ----------- #
   magento:
     image: ghcr.io/erikngigi/magento:latest
     hostname: magento
@@ -27,7 +29,7 @@ services:
 
   # Magento MariaDB Database
   magento-db:
-    image: mariadb:10.2
+    image: mariadb:11.4
     hostname: magento-db
     container_name: magento-db
     restart: unless-stopped
@@ -46,7 +48,7 @@ services:
 
   # Magento OpenSearch Engine
   magento-opensearch:
-    image: opensearchproject/opensearch:2.11.0
+    image: opensearchproject/opensearch:3
     hostname: magento-opensearch
     container_name: magento-opensearch
     restart: unless-stopped
@@ -61,8 +63,9 @@ services:
     volumes:
       - magento-opensearch-data:/usr/share/opensearch/data
 
-
-  # Akeneo
+  # ----------- #
+  # AKENEO
+  # ----------- #
   akeneo:
     image: ghcr.io/erikngigi/akeneo:latest
     hostname: akeneo

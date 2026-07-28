@@ -26,7 +26,7 @@ magento_exec() {
 
 # Setup composer details for Magento repository
 magento_exec bash -c "composer config --global http-basic.repo.magento.com $ADOBE_MAGENTO_USERNAME $ADOBE_MAGENTO_PASSWORD"
-magento_exec bash -c "composer config --global policy.advisories.block false"
+# magento_exec bash -c "composer config --global policy.advisories.block false"
 print_green "Magento composer details added successfully."
 
 # Download the Magento community edition files directly into $MAGENTO_INST_DIR
